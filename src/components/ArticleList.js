@@ -5,6 +5,7 @@ import ArticleCard from "./ArticleCard";
 
 export default function ArticleList() {
   const [articles, set_articles] = useState([]);
+  const [image, set_image] = useState();
 
   const clearNotifications = () => {
     set_articles([]);
@@ -21,6 +22,12 @@ export default function ArticleList() {
 
       console.log("Got back:", res);
       set_articles(res.data);
+
+      const response = await axios.get(
+        `https://dog.ceo/api/breeds/image/random`
+      );
+      console.log("The dog response is here :", response.data);
+      set_image(response.data.message);
     }
     doSomeDataFetching();
   }, []);
@@ -49,6 +56,7 @@ export default function ArticleList() {
     <div>
       <p>Here's a lovely list of articles, for your reading pleasure:</p>
       <button onClick={clearNotifications}>Clear Notifications</button>
+      <img src={image} alt="Flowers in Chania" width="460" height="345" />
       {articles.map((article) => (
         <ArticleCard
           key={article.id}
